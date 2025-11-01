@@ -5,6 +5,9 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 
 const navigation = [
+  { name: 'Manager', href: '/manager', icon: '👨‍💼', description: 'Executive dashboard' },
+  { name: 'Waiter', href: '/waiter', icon: '👨‍🍳', description: 'Service interface' },
+  { name: 'Customer', href: '/customer', icon: '👥', description: 'Table ordering' },
   { name: 'Dashboard', href: '/dashboard', icon: '📊', description: 'Overview & stats' },
   { name: 'Tables', href: '/tables', icon: '🪑', description: 'Manage seating' },
   { name: 'Orders', href: '/orders', icon: '📋', description: 'Track orders' },

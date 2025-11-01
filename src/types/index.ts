@@ -3,10 +3,158 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  role: 'waiter' | 'manager' | 'admin';
+  role: 'waiter' | 'manager' | 'admin' | 'customer';
   restaurantId: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+// Manager-Specific Types
+export interface ManagerKPI {
+  title: string;
+  value: string;
+  change: string;
+  changeType: 'positive' | 'negative' | 'neutral';
+  icon: string;
+  period: 'today' | 'week' | 'month';
+}
+
+export interface StaffPerformance {
+  id: string;
+  name: string;
+  role: 'waiter' | 'host' | 'bartender' | 'cook';
+  tablesServed: number;
+  ordersProcessed: number;
+  tipsEarned: number;
+  customerRating: number;
+  shiftStart: Date;
+  shiftEnd?: Date;
+  efficiency: number; // percentage
+}
+
+export interface RevenueData {
+  timestamp: Date;
+  amount: number;
+  orderCount: number;
+  averageOrderValue: number;
+}
+
+export interface ManagerAlert {
+  id: string;
+  type: 'urgent' | 'warning' | 'info';
+  title: string;
+  description: string;
+  timestamp: Date;
+  resolved: boolean;
+  priority: 'high' | 'medium' | 'low';
+}
+
+// Waiter-Specific Types
+export interface WaiterTable {
+  id: string;
+  number: string;
+  status: 'available' | 'occupied' | 'needsAttention' | 'ordering' | 'paying';
+  guests: number;
+  capacity: number;
+  lastActivity: string;
+  priority: 'high' | 'normal' | 'low';
+  totalBill?: number;
+  orders?: number;
+  assignedWaiterId?: string;
+}
+
+export interface WaiterNotification {
+  id: string;
+  type: 'order' | 'request' | 'alert';
+  title: string;
+  message: string;
+  tableNumber: string;
+  timestamp: string;
+  urgent: boolean;
+  waiterId: string;
+}
+
+export interface WaiterShiftStats {
+  hoursWorked: number;
+  tablesServed: number;
+  ordersProcessed: number;
+  tipsEarned: number;
+  customerRating: number;
+  shiftStart: Date;
+  shiftEnd?: Date;
+}
+
+export interface TableAction {
+  action: 'seat' | 'reserve' | 'takeOrder' | 'viewTable' | 'requestBill' | 'clear';
+  tableId: string;
+  waiterId: string;
+  timestamp: Date;
+  notes?: string;
+}
+
+// Customer-Specific Types
+export interface CustomerMenuItem {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  image: string;
+  dietary: string[];
+  popular: boolean;
+  rating: number;
+  prepTime: string;
+  allergens?: string[];
+  nutritionalInfo?: {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fat: number;
+  };
+}
+
+export interface CustomerOrderItem {
+  menuItem: CustomerMenuItem;
+  quantity: number;
+  customizations: string[];
+  assignedTo: string;
+  specialInstructions?: string;
+}
+
+export interface GroupMember {
+  id: string;
+  name: string;
+  avatar: string;
+  orders: CustomerOrderItem[];
+  total: number;
+  status: 'ordering' | 'ready' | 'confirmed' | 'paid';
+  paymentMethod?: 'cash' | 'card' | 'mobile';
+}
+
+export interface BillSplitOption {
+  type: 'equal' | 'byItem' | 'byPercentage' | 'custom';
+  participants: string[];
+  amounts?: { [memberId: string]: number };
+}
+
+export interface CustomerTable {
+  id: string;
+  number: string;
+  restaurant: {
+    name: string;
+    address: string;
+    phone: string;
+  };
+  server: {
+    name: string;
+    id: string;
+  };
+  sessionId: string;
+  members: GroupMember[];
+  totalBill: number;
+  tax: number;
+  serviceCharge: number;
+  status: 'active' | 'orderPlaced' | 'paymentPending' | 'completed';
 }
 
 // Restaurant/Venue Types

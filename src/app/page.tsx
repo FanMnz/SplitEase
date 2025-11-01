@@ -25,15 +25,19 @@ export default function Home() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Link href="/dashboard" className="btn btn-primary btn-lg group">
-                <span>Start Free Trial</span>
+              <Link href="/manager" className="btn btn-primary btn-lg group">
+                <span>Manager Dashboard</span>
                 <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </Link>
-              <Link href="#demo" className="btn btn-secondary btn-lg group">
-                <span className="mr-2">▶️</span>
-                Watch Demo
+              <Link href="/waiter" className="btn btn-secondary btn-lg group">
+                <span>Waiter Interface</span>
+                <span className="ml-2">👨‍🍳</span>
+              </Link>
+              <Link href="/customer" className="btn btn-secondary btn-lg group">
+                <span>Customer Portal</span>
+                <span className="ml-2">👥</span>
               </Link>
             </div>
           </div>
