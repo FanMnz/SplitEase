@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import ProtectedRoute from '@/components/ProtectedRoute'
 import { 
   ClockIcon,
   UserGroupIcon,
@@ -174,7 +175,7 @@ function NotificationCard({ notification, onDismiss }: NotificationProps) {
   )
 }
 
-export default function WaiterInterface() {
+function WaiterInterface() {
   const [selectedSection, setSelectedSection] = useState('all')
   const [notifications, setNotifications] = useState([
     {
@@ -427,5 +428,13 @@ export default function WaiterInterface() {
         </button>
       </div>
     </div>
+  )
+}
+
+export default function ProtectedWaiterInterface() {
+  return (
+    <ProtectedRoute requiredRole="waiter" requiredPermissions={['view_tables', 'take_orders']}>
+      <WaiterInterface />
+    </ProtectedRoute>
   )
 }

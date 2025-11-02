@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import ProtectedRoute from '@/components/ProtectedRoute'
 import { 
   UserGroupIcon,
   ShoppingCartIcon,
@@ -256,7 +257,7 @@ function GroupOverview({ groupMembers, onViewMemberOrder }: {
   )
 }
 
-export default function CustomerInterface() {
+function CustomerInterface() {
   const [selectedCategory, setSelectedCategory] = useState('appetizers')
   const [favorites, setFavorites] = useState<string[]>(['1', '3'])
   const [activeTab, setActiveTab] = useState<'menu' | 'order' | 'group'>('menu')
@@ -544,5 +545,13 @@ export default function CustomerInterface() {
         </div>
       )}
     </div>
+  )
+}
+
+export default function ProtectedCustomerInterface() {
+  return (
+    <ProtectedRoute requiredRole="customer" requiredPermissions={['place_orders', 'view_menu']}>
+      <CustomerInterface />
+    </ProtectedRoute>
   )
 }

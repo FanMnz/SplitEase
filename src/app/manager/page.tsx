@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import ProtectedRoute from '@/components/ProtectedRoute'
 import { 
   ChartBarIcon, 
   UserGroupIcon, 
@@ -86,7 +87,7 @@ function QuickAction({ title, description, icon, onClick, urgent = false }: Quic
   )
 }
 
-export default function ManagerDashboard() {
+function ManagerDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState('today')
 
   const kpiData = [
@@ -320,5 +321,13 @@ export default function ManagerDashboard() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function ProtectedManagerDashboard() {
+  return (
+    <ProtectedRoute requiredRole="manager" requiredPermissions={['view_analytics', 'manage_staff']}>
+      <ManagerDashboard />
+    </ProtectedRoute>
   )
 }

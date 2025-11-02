@@ -3,6 +3,16 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
+import { useAuth } from '@/contexts/AuthContext'
+import { 
+  ChevronDownIcon, 
+  UserIcon, 
+  ArrowRightOnRectangleIcon 
+} from '@heroicons/react/24/outline'
+import { 
+  ArrowRightStartOnRectangleIcon,
+  UserCircleIcon 
+} from '@heroicons/react/24/outline'
 
 const navigation = [
   { name: 'Manager', href: '/manager', icon: '👨‍💼', description: 'Executive dashboard' },
@@ -19,6 +29,38 @@ const navigation = [
 export default function Navigation() {
   const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { user, logout, isAuthenticated } = useAuth()
+
+  // Don't show navigation on login/auth pages
+  if (pathname === '/login' || pathname === '/qr-scanner' || pathname === '/unauthorized') {
+    return null
+  }
+
+  // Filter navigation based on user role and permissions
+  const getFilteredNavigation = () => {
+    if (!isAuthenticated || !user) {
+      return navigation.filter(item => ['Manager', 'Waiter', 'Customer'].includes(item.name))
+    }
+
+    switch (user.role) {
+      case 'manager':
+        return navigation.filter(item => 
+          ['Manager', 'Dashboard', 'Tables', 'Orders', 'Menu', 'Payments', 'Analytics'].includes(item.name)
+        )
+      case 'waiter':
+        return navigation.filter(item => 
+          ['Waiter', 'Tables', 'Orders', 'Menu', 'Payments'].includes(item.name)
+        )
+      case 'customer':
+        return navigation.filter(item => 
+          ['Customer', 'Menu', 'Orders'].includes(item.name)
+        )
+      default:
+        return []
+    }
+  }
+
+  const filteredNavigation = getFilteredNavigation()
 
   return (
     <>
@@ -39,7 +81,7 @@ export default function Navigation() {
 
             {/* Navigation Links */}
             <div className="flex items-center space-x-1">
-              {navigation.map((item) => {
+              {filteredNavigation.map((item) => {
                 const isActive = pathname === item.href
                 return (
                   <Link
@@ -68,21 +110,52 @@ export default function Navigation() {
 
             {/* User Menu */}
             <div className="flex items-center space-x-4">
-              <button className="relative p-2.5 text-neutral-600 hover:text-neutral-900 rounded-xl hover:bg-neutral-50 transition-colors">
-                <span className="text-xl">🔔</span>
-                <div className="absolute -top-1 -right-1 w-5 h-5 bg-error-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">3</span>
-                </div>
-              </button>
-              <div className="flex items-center space-x-3 p-2 rounded-xl hover:bg-neutral-50 cursor-pointer transition-colors">
-                <div className="w-9 h-9 bg-gradient-to-br from-brand-500 to-brand-600 rounded-xl flex items-center justify-center text-white text-sm font-semibold shadow-sm">
-                  JD
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-medium text-neutral-900">John Doe</span>
-                  <span className="text-xs text-neutral-500">Manager</span>
-                </div>
-              </div>
+              {user ? (
+                <>
+                  <button className="relative p-2.5 text-neutral-600 hover:text-neutral-900 rounded-xl hover:bg-neutral-50 transition-colors">
+                    <span className="text-xl">🔔</span>
+                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-error-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">3</span>
+                    </div>
+                  </button>
+                  <div className="flex items-center space-x-3 p-2 rounded-xl hover:bg-neutral-50 cursor-pointer transition-colors group relative">
+                    <div className="w-9 h-9 bg-gradient-to-br from-brand-500 to-brand-600 rounded-xl flex items-center justify-center text-white text-sm font-semibold shadow-sm">
+                      {user.name.split(' ').map(n => n[0]).join('')}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium text-neutral-900">{user.name}</span>
+                      <span className="text-xs text-neutral-500 capitalize">{user.role}</span>
+                    </div>
+                    <ChevronDownIcon className="w-4 h-4 text-neutral-400 group-hover:text-neutral-600" />
+                    
+                    {/* User Dropdown */}
+                    <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-neutral-200/50 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                      <div className="px-4 py-2 border-b border-neutral-100">
+                        <p className="text-sm font-medium text-neutral-900">{user.name}</p>
+                        <p className="text-xs text-neutral-500">{user.email}</p>
+                      </div>
+                      <Link href="/profile" className="flex items-center px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50">
+                        <UserIcon className="w-4 h-4 mr-3" />
+                        Profile Settings
+                      </Link>
+                      <button
+                        onClick={logout}
+                        className="flex items-center w-full px-4 py-2 text-sm text-error-600 hover:bg-error-50"
+                      >
+                        <ArrowRightOnRectangleIcon className="w-4 h-4 mr-3" />
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <Link
+                  href="/login"
+                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-xl transition-colors"
+                >
+                  Sign In
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -143,15 +216,47 @@ export default function Navigation() {
               })}
             </div>
             <div className="px-4 py-4 border-t border-neutral-200/50">
-              <div className="flex items-center space-x-3 p-3 rounded-xl bg-neutral-50">
-                <div className="w-10 h-10 bg-gradient-to-br from-brand-500 to-brand-600 rounded-xl flex items-center justify-center text-white text-sm font-semibold">
-                  JD
+              {user ? (
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3 p-3 rounded-xl bg-neutral-50">
+                    <div className="w-10 h-10 bg-gradient-to-br from-brand-500 to-brand-600 rounded-xl flex items-center justify-center text-white text-sm font-semibold">
+                      {user.name.split(' ').map(n => n[0]).join('')}
+                    </div>
+                    <div className="flex flex-col flex-1">
+                      <span className="text-sm font-medium text-neutral-900">{user.name}</span>
+                      <span className="text-xs text-neutral-500 capitalize">{user.role} • {user.email}</span>
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <Link
+                      href="/profile"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-100 rounded-lg"
+                    >
+                      <UserIcon className="w-4 h-4 mr-3" />
+                      Profile Settings
+                    </Link>
+                    <button
+                      onClick={() => {
+                        logout()
+                        setIsMobileMenuOpen(false)
+                      }}
+                      className="flex items-center w-full px-3 py-2 text-sm text-error-600 hover:bg-error-50 rounded-lg"
+                    >
+                      <ArrowRightOnRectangleIcon className="w-4 h-4 mr-3" />
+                      Sign Out
+                    </button>
+                  </div>
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-medium text-neutral-900">John Doe</span>
-                  <span className="text-xs text-neutral-500">Manager • Restaurant ABC</span>
-                </div>
-              </div>
+              ) : (
+                <Link
+                  href="/login"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block w-full text-center px-4 py-3 text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-xl transition-colors"
+                >
+                  Sign In
+                </Link>
+              )}
             </div>
           </div>
         )}
