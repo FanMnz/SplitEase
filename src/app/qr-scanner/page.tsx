@@ -94,7 +94,7 @@ export default function QRScannerPage() {
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Welcome!</h1>
           <p className="text-lg text-gray-600 mb-6">
-            You're now connected to your table. Redirecting to your dining experience...
+            You&apos;re now connected to your table. Redirecting to your dining experience...
           </p>
           <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin mx-auto" />
         </div>
@@ -245,7 +245,7 @@ export default function QRScannerPage() {
 
             <div className="mt-8 p-4 bg-blue-50 rounded-xl">
               <p className="text-sm text-blue-700">
-                <strong>💡 Tip:</strong> In a real restaurant, you'd scan the QR code 
+                <strong>💡 Tip:</strong> In a real restaurant, you&apos;d scan the QR code 
                 printed on your table or provided by your server.
               </p>
             </div>

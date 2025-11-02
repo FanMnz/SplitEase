@@ -92,7 +92,7 @@ function ManagerDashboard() {
 
   const kpiData = [
     {
-      title: 'Today\'s Revenue',
+      title: 'Today&apos;s Revenue',
       value: '€2,847',
       change: '+12.5% vs yesterday',
       changeType: 'positive' as const,
@@ -196,6 +196,13 @@ function ManagerDashboard() {
               </span>
             </div>
             <div className="flex items-center space-x-4">
+              <a
+                href="/manager/enhanced"
+                className="inline-flex items-center px-3 py-2 text-sm font-medium text-brand-700 bg-brand-50 hover:bg-brand-100 rounded-lg transition-colors"
+              >
+                <ChartBarIcon className="w-4 h-4 mr-2" />
+                Enhanced Dashboard
+              </a>
               <select 
                 value={selectedPeriod}
                 onChange={(e) => setSelectedPeriod(e.target.value)}
@@ -221,7 +228,7 @@ function ManagerDashboard() {
             Good evening, Manager! 👨‍💼
           </h2>
           <p className="text-gray-600">
-            Here's your restaurant overview for {new Date().toLocaleDateString('en-US', { 
+            Here&apos;s your restaurant overview for {new Date().toLocaleDateString('en-US', { 
               weekday: 'long', 
               year: 'numeric', 
               month: 'long', 
@@ -286,7 +293,7 @@ function ManagerDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Revenue Chart Placeholder */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Today's Revenue Trend</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Today&apos;s Revenue Trend</h3>
             <div className="h-48 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg flex items-center justify-center">
               <div className="text-center">
                 <ChartBarIcon className="w-12 h-12 text-blue-400 mx-auto mb-2" />

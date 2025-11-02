@@ -42,8 +42,8 @@ export default function UnauthorizedPage() {
 
         {/* Message */}
         <p className="text-lg text-gray-600 mb-8 max-w-lg mx-auto">
-          You don't have permission to access this page. Your current role 
-          {user && ` (${user.role})`} doesn't include the required permissions for this resource.
+          You don&apos;t have permission to access this page. Your current role 
+          {user && ` (${user.role})`} doesn&apos;t include the required permissions for this resource.
         </p>
 
         {/* User Info */}
