@@ -14,6 +14,8 @@ import {
   MapPinIcon,
   ChatBubbleLeftIcon
 } from '@heroicons/react/24/outline'
+import RealtimeStats from '@/components/realtime/RealtimeStats'
+import LiveUpdatesDisplay from '@/components/realtime/LiveUpdatesDisplay'
 
 interface TableCardProps {
   table: {
@@ -360,6 +362,21 @@ function WaiterInterface() {
           <div className="bg-white rounded-xl p-4 shadow-sm">
             <p className="text-2xl font-bold text-green-600">€{shiftStats.tipsEarned}</p>
             <p className="text-xs text-gray-500">Tips Earned</p>
+          </div>
+        </div>
+
+        {/* Real-time Stats */}
+        <div className="mb-6">
+          <RealtimeStats role="waiter" />
+        </div>
+
+        {/* Live Updates */}
+        <div className="mb-6">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+            <LiveUpdatesDisplay 
+              types={['order_status', 'kitchen_update']} 
+              maxUpdates={5} 
+            />
           </div>
         </div>
 

@@ -16,6 +16,8 @@ import {
   ArrowTrendingUpIcon,
   BellIcon
 } from '@heroicons/react/24/outline'
+import RealtimeStats from '@/components/realtime/RealtimeStats'
+import LiveUpdatesDisplay from '@/components/realtime/LiveUpdatesDisplay'
 
 interface KPICardProps {
   title: string
@@ -289,8 +291,18 @@ function ManagerDashboard() {
           </div>
         </div>
 
+        {/* Real-time Stats */}
+        <div className="mb-8">
+          <RealtimeStats role="manager" />
+        </div>
+
         {/* Today's Summary */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Live Updates */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <LiveUpdatesDisplay maxUpdates={8} />
+          </div>
+          
           {/* Revenue Chart Placeholder */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Today&apos;s Revenue Trend</h3>

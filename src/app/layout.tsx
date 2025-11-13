@@ -3,6 +3,9 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Navigation from '@/components/Navigation'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { OrderProvider } from '@/contexts/OrderContext'
+import { PaymentProvider } from '@/contexts/PaymentContext'
+import { RealtimeProvider } from '@/contexts/RealtimeContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -27,12 +30,18 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} bg-neutral-50 antialiased`}>
         <AuthProvider>
-          <div className="min-h-screen">
-            <Navigation />
-            <main className="pb-20 lg:pb-0">
-            {children}
-          </main>
-        </div>
+          <OrderProvider>
+            <PaymentProvider>
+              <RealtimeProvider>
+                <div className="min-h-screen">
+                  <Navigation />
+                  <main className="pb-20 lg:pb-0">
+                  {children}
+                </main>
+              </div>
+              </RealtimeProvider>
+            </PaymentProvider>
+          </OrderProvider>
         </AuthProvider>
       </body>
     </html>

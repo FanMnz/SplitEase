@@ -13,6 +13,8 @@ import {
   ArrowRightStartOnRectangleIcon,
   UserCircleIcon 
 } from '@heroicons/react/24/outline'
+import NotificationCenter from '@/components/realtime/NotificationCenter'
+import ConnectionStatus from '@/components/realtime/ConnectionStatus'
 
 const navigation = [
   { name: 'Manager', href: '/manager', icon: '👨‍💼', description: 'Executive dashboard' },
@@ -22,8 +24,9 @@ const navigation = [
   { name: 'Tables', href: '/tables', icon: '🪑', description: 'Manage seating' },
   { name: 'Orders', href: '/orders', icon: '📋', description: 'Track orders' },
   { name: 'Menu', href: '/menu', icon: '📖', description: 'Menu items' },
-  { name: 'Payments', href: '/payments', icon: '💳', description: 'Bills & splits' },
+  { name: 'Billing', href: '/billing', icon: '💳', description: 'Bills & payments' },
   { name: 'Analytics', href: '/analytics', icon: '📈', description: 'Reports' },
+  { name: 'Real-time Demo', href: '/realtime-demo', icon: '⚡', description: 'Live updates demo' },
 ]
 
 export default function Navigation() {
@@ -45,11 +48,11 @@ export default function Navigation() {
     switch (user.role) {
       case 'manager':
         return navigation.filter(item => 
-          ['Manager', 'Dashboard', 'Tables', 'Orders', 'Menu', 'Payments', 'Analytics'].includes(item.name)
+          ['Manager', 'Dashboard', 'Tables', 'Orders', 'Menu', 'Billing', 'Analytics'].includes(item.name)
         )
       case 'waiter':
         return navigation.filter(item => 
-          ['Waiter', 'Tables', 'Orders', 'Menu', 'Payments'].includes(item.name)
+          ['Waiter', 'Tables', 'Orders', 'Menu', 'Billing'].includes(item.name)
         )
       case 'customer':
         return navigation.filter(item => 
@@ -112,12 +115,8 @@ export default function Navigation() {
             <div className="flex items-center space-x-4">
               {user ? (
                 <>
-                  <button className="relative p-2.5 text-neutral-600 hover:text-neutral-900 rounded-xl hover:bg-neutral-50 transition-colors">
-                    <span className="text-xl">🔔</span>
-                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-error-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs font-bold">3</span>
-                    </div>
-                  </button>
+                  <ConnectionStatus />
+                  <NotificationCenter />
                   <div className="flex items-center space-x-3 p-2 rounded-xl hover:bg-neutral-50 cursor-pointer transition-colors group relative">
                     <div className="w-9 h-9 bg-gradient-to-br from-brand-500 to-brand-600 rounded-xl flex items-center justify-center text-white text-sm font-semibold shadow-sm">
                       {user.name.split(' ').map(n => n[0]).join('')}
