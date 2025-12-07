@@ -8,6 +8,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // Custom design system for Live Operations Control Center
         brand: {
           50: '#f0f9ff',
           100: '#e0f2fe',
@@ -15,12 +16,25 @@ module.exports = {
           300: '#7dd3fc',
           400: '#38bdf8',
           500: '#0ea5e9',
-          600: '#0284c7',
+          600: '#00C4CC',
           700: '#0369a1',
           800: '#075985',
           900: '#0c4a6e',
           950: '#082f49',
         },
+        primary: {
+          DEFAULT: '#002147', // Navy Blue - background, headers
+        },
+        accent: {
+          DEFAULT: '#00C4CC', // Teal/Aqua - interactive elements, CTAs
+        },
+        background: {
+          DEFAULT: '#F7F9FB', // Light Gray - main page background
+        },
+        critical: {
+          DEFAULT: '#E3342F', // Critical red - alerts
+        },
+        // warning scale defined below
         success: {
           50: '#f0fdf4',
           100: '#dcfce7',
