@@ -9,7 +9,7 @@ export default function Home() {
           <div className="animate-fade-in">
             <div className="inline-flex items-center px-4 py-2 bg-brand-100 text-brand-700 rounded-full text-sm font-medium mb-8">
               <span className="mr-2">🚀</span>
-              Revolutionizing HORECA Operations
+              Revolutionizing Billing Operations
             </div>
             
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-neutral-900 mb-6 text-balance">

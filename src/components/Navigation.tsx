@@ -78,7 +78,7 @@ export default function Navigation() {
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-bold text-neutral-900">SplitEase</span>
-                <span className="text-xs text-neutral-500 -mt-1">HORECA Solutions</span>
+                <span className="text-xs text-neutral-500 -mt-1">Billing Solutions</span>
               </div>
             </Link>
 

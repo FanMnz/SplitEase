@@ -10,7 +10,7 @@ import { RealtimeProvider } from '@/contexts/RealtimeContext'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'SplitEase - Group Billing for HORECA',
+  title: 'SplitEase - Group Billing Made Easy',
   description: 'Revolutionizing group billing and order management in hotels, restaurants, cafes, bars, and entertainment venues.',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
   themeColor: '#0ea5e9',
