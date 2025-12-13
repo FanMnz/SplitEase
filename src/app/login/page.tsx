@@ -220,7 +220,7 @@ export default function LoginPage() {
             </div>
             <div className="flex flex-col">
               <span className="text-2xl font-bold text-gray-900">SplitEase</span>
-              <span className="text-sm text-gray-500 -mt-1">HORECA Solutions</span>
+              <span className="text-sm text-gray-500 -mt-1">Billing Solutions</span>
             </div>
           </Link>
 
