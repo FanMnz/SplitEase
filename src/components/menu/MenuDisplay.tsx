@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useOrders, MenuItem, OrderItem } from '@/contexts/OrderContext'
 import MuxPlayer from '@mux/mux-player-react'
+import { useMediaConfig } from '@/hooks/useMediaConfig'
 import { 
   PlusIcon,
   MinusIcon,
@@ -28,9 +29,15 @@ export default function MenuDisplay({
   showCategories = true 
 }: MenuDisplayProps) {
   const { menu, getMenuByCategory } = useOrders()
+  const mediaConfig = useMediaConfig()
+  const [mounted, setMounted] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState('appetizers')
   const [favorites, setFavorites] = useState<string[]>([])
   const [showDetails, setShowDetails] = useState<string | null>(null)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const categories = [
     { id: 'appetizers', name: 'Appetizers', emoji: '🥗' },
