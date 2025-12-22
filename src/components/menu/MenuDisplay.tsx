@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useOrders, MenuItem, OrderItem } from '@/contexts/OrderContext'
+import MuxPlayer from '@mux/mux-player-react'
 import { 
   PlusIcon,
   MinusIcon,
@@ -136,9 +137,24 @@ export default function MenuDisplay({
                   key={item.id}
                   className="border border-neutral-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
                 >
-                  {/* Item Image Placeholder */}
-                  <div className="h-48 bg-gradient-to-br from-neutral-100 to-neutral-200 flex items-center justify-center relative">
-                    <span className="text-4xl">{item.category === 'appetizers' ? '🥗' : item.category === 'mains' ? '🍽️' : item.category === 'desserts' ? '🍰' : '🥤'}</span>
+                  {/* Media Preview */}
+                  <div className="h-48 relative overflow-hidden">
+                    {item.muxPlaybackId ? (
+                      <MuxPlayer
+                        playbackId={item.muxPlaybackId}
+                        streamType="on-demand"
+                        muted
+                        autoPlay
+                        loop
+                        playsInline
+                        poster={item.posterUrl}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-neutral-100 to-neutral-200 flex items-center justify-center">
+                        <span className="text-4xl">{item.category === 'appetizers' ? '🥗' : item.category === 'mains' ? '🍽️' : item.category === 'desserts' ? '🍰' : '🥤'}</span>
+                      </div>
+                    )}
                     
                     {/* Favorite Button */}
                     <button

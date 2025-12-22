@@ -12,6 +12,10 @@ export interface MenuItem {
   price: number
   category: string
   image?: string
+  // Media enhancements for premium presentation
+  muxPlaybackId?: string // Mux playback ID for streaming preview/hero
+  posterUrl?: string // Poster image for video
+  previewClipUrl?: string // Optional short clip fallback
   allergens: string[]
   dietary: string[] // vegetarian, vegan, gluten-free, etc.
   preparationTime: number // in minutes

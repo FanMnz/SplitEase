@@ -1,8 +1,24 @@
+"use client"
 import Link from 'next/link'
+import AnnouncementHero from '@/components/media/AnnouncementHero'
+import BackgroundVideo from '@/components/media/BackgroundVideo'
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-brand-50">
+      {/* Hero Video Announcement */}
+      <AnnouncementHero
+        playbackId="your_announcement_playback_id"
+        title="Tonight: Live Jazz & Seasonal Menu"
+        subtitle="Experience signature dishes and crafted cocktails"
+        ctaLabel="Reserve a Table"
+        onCtaClick={() => window.location.assign('/tables')}
+      />
+
+      {/* Optional background section video under the next section */}
+      <div className="-mt-16">
+        <BackgroundVideo playbackId="your_background_playback_id" />
+      </div>
       {/* Hero Section */}
       <section className="container-mobile pt-16 pb-24 lg:pt-24 lg:pb-32">
         <div className="text-center">
