@@ -32,10 +32,11 @@ export default function Home() {
         poster={mediaConfig.announcement.poster}
       />
 
-      {/* Optional background section video under the next section */}
-      <div className="-mt-16">
-        <BackgroundVideo playbackId={mediaConfig.background.playbackId} poster={mediaConfig.background.poster} />
-      </div>
+      {/* Full-screen background visual section */}
+      <BackgroundVideo
+        playbackId={mediaConfig.background.playbackId}
+        poster={mediaConfig.background.poster}
+      />
       {/* Hero Section */}
       <section className="container-mobile pt-16 pb-24 lg:pt-24 lg:pb-32">
         <div className="text-center">

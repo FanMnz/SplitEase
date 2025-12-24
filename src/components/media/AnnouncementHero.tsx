@@ -22,7 +22,7 @@ const AnnouncementHero: React.FC<AnnouncementHeroProps> = ({
   poster
 }) => {
   return (
-    <section className="relative w-full h-[70vh] overflow-hidden">
+    <section className="relative w-screen h-screen overflow-hidden">
       <MuxPlayer
         className="absolute inset-0 w-full h-full object-cover"
         playbackId={playbackId}

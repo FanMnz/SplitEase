@@ -17,7 +17,7 @@ const BackgroundVideo: React.FC<BackgroundVideoProps> = ({
   className = ''
 }) => {
   return (
-    <div className={`relative w-full h-[60vh] lg:h-[80vh] overflow-hidden ${className}`}>
+    <div className={`relative w-screen h-screen overflow-hidden ${className}`}>
       {/* Video */}
       <MuxPlayer
         className="absolute inset-0 w-full h-full object-cover"
