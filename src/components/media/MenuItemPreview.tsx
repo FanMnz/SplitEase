@@ -39,7 +39,12 @@ const MenuItemPreview: React.FC<MenuItemPreviewProps> = ({
             loop
             playsInline
             poster={posterUrl}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            style={{
+              width: '100%',
+              height: '100%',
+              ['--media-object-fit' as any]: 'cover',
+              ['--media-object-position' as any]: 'center'
+            }}
           />
         ) : (
           <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">

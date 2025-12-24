@@ -24,7 +24,7 @@ const AnnouncementHero: React.FC<AnnouncementHeroProps> = ({
   return (
     <section className="relative w-screen h-screen overflow-hidden">
       <MuxPlayer
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full"
         playbackId={playbackId}
         streamType="on-demand"
         muted
@@ -32,7 +32,13 @@ const AnnouncementHero: React.FC<AnnouncementHeroProps> = ({
         loop
         playsInline
         poster={poster}
-        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        style={{
+          width: '100%',
+          height: '100%',
+          // Ensure the internal media element covers the container (no letterboxing)
+          ['--media-object-fit' as any]: 'cover',
+          ['--media-object-position' as any]: 'center'
+        }}
       />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-black/10" />

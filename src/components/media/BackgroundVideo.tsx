@@ -20,7 +20,7 @@ const BackgroundVideo: React.FC<BackgroundVideoProps> = ({
     <div className={`relative w-screen h-screen overflow-hidden ${className}`}>
       {/* Video */}
       <MuxPlayer
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full"
         playbackId={playbackId}
         streamType="on-demand"
         muted
@@ -28,7 +28,12 @@ const BackgroundVideo: React.FC<BackgroundVideoProps> = ({
         loop
         playsInline
         poster={poster}
-        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        style={{
+          width: '100%',
+          height: '100%',
+          ['--media-object-fit' as any]: 'cover',
+          ['--media-object-position' as any]: 'center'
+        }}
       />
 
       {/* Overlay */}
