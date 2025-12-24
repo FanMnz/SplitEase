@@ -49,7 +49,6 @@ const DEFAULT_CONFIG: MediaConfig = {
 
 export function useMediaConfig(): MediaConfig {
   const [config, setConfig] = useState<MediaConfig>(DEFAULT_CONFIG)
-  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
     // Only run on client side
@@ -63,11 +62,10 @@ export function useMediaConfig(): MediaConfig {
           setConfig(DEFAULT_CONFIG)
         }
       }
-      setIsLoaded(true)
     }
   }, [])
 
-  // Return config even before loaded to avoid hydration mismatch
+  // Return config - will update after useEffect runs on client
   return config
 }
 
