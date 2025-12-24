@@ -69,10 +69,6 @@ export default function Home() {
                 <span>Waiter Interface</span>
                 <span className="ml-2">👨‍🍳</span>
               </Link>
-              <Link href="/customer" className="btn btn-secondary btn-lg group">
-                <span>Customer Portal</span>
-                <span className="ml-2">👥</span>
-              </Link>
             </div>
           </div>
           

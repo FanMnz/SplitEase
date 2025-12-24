@@ -44,6 +44,12 @@ export default function QRScannerPage() {
     }
   ]
 
+  // Extract table ID from QR data and redirect
+  const getTableIdFromQR = (data: string): string | null => {
+    const match = data.match(/table-(\d+)-/)
+    return match ? match[1] : null
+  }
+
   // Redirect if already authenticated
   useEffect(() => {
     if (user) {
@@ -58,9 +64,10 @@ export default function QRScannerPage() {
     try {
       const success = await loginWithQR(data)
       if (success) {
+        const tableId = getTableIdFromQR(data)
         setSuccess(true)
         setTimeout(() => {
-          router.push('/customer')
+          router.push(tableId ? `/table/${tableId}` : '/customer')
         }, 1500)
       } else {
         setError('Invalid QR code. Please try scanning the QR code from your table.')

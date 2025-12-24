@@ -34,15 +34,15 @@ export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { user, logout, isAuthenticated } = useAuth()
 
-  // Don't show navigation on login/auth pages
-  if (pathname === '/login' || pathname === '/qr-scanner' || pathname === '/unauthorized') {
+  // Don't show navigation on login/auth pages or client table routes
+  if (pathname === '/login' || pathname === '/qr-scanner' || pathname === '/unauthorized' || pathname.startsWith('/table/')) {
     return null
   }
 
   // Filter navigation based on user role and permissions
   const getFilteredNavigation = () => {
     if (!isAuthenticated || !user) {
-      return navigation.filter(item => ['Manager', 'Waiter', 'Customer'].includes(item.name))
+      return navigation.filter(item => ['Manager', 'Waiter'].includes(item.name))
     }
 
     switch (user.role) {
