@@ -2,7 +2,6 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import AnnouncementHero from '@/components/media/AnnouncementHero'
-import BackgroundVideo from '@/components/media/BackgroundVideo'
 import { useMediaConfig } from '@/hooks/useMediaConfig'
 
 export default function Home() {
@@ -22,68 +21,21 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-brand-50">
-      {/* Hero Video Announcement */}
+      {/* Hero using AnnouncementHero over background video */}
       <AnnouncementHero
-        playbackId={mediaConfig.announcement.playbackId}
-        title="Tonight: Live Jazz & Seasonal Menu"
-        subtitle="Experience signature dishes and crafted cocktails"
-        ctaLabel="Reserve a Table"
-        onCtaClick={() => window.location.assign('/tables')}
-        poster={mediaConfig.announcement.poster}
-      />
-
-      {/* Full-screen background visual section */}
-      <BackgroundVideo
         playbackId={mediaConfig.background.playbackId}
         poster={mediaConfig.background.poster}
+        badgeLabel="Revolutionizing Billing Operations"
+        title="Make Group Billing"
+        highlight="Effortless"
+        subtitle={
+          'Transform your restaurant operations with SplitEase. Eliminate billing confusion, speed up table turnover, and delight your customers with seamless payment experiences.'
+        }
+        ctaLabel="Manager Dashboard"
+        onCtaClick={() => window.location.assign('/manager')}
+        secondaryCtaLabel="Waiter Interface"
+        onSecondaryCtaClick={() => window.location.assign('/waiter')}
       />
-      {/* Hero Section */}
-      <section className="container-mobile pt-16 pb-24 lg:pt-24 lg:pb-32">
-        <div className="text-center">
-          <div className="animate-fade-in">
-            <div className="inline-flex items-center px-4 py-2 bg-brand-100 text-brand-700 rounded-full text-sm font-medium mb-8">
-              <span className="mr-2">🚀</span>
-              Revolutionizing Billing Operations
-            </div>
-            
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-neutral-900 mb-6 text-balance">
-              Make Group Billing
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-brand-500">
-                Effortless
-              </span>
-            </h1>
-            
-            <p className="text-lg lg:text-xl text-neutral-600 mb-12 max-w-3xl mx-auto text-balance leading-relaxed">
-              Transform your restaurant operations with SplitEase. Eliminate billing confusion, 
-              speed up table turnover, and delight your customers with seamless payment experiences.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Link href="/manager" className="btn btn-primary btn-lg group">
-                <span>Manager Dashboard</span>
-                <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
-              <Link href="/waiter" className="btn btn-secondary btn-lg group">
-                <span>Waiter Interface</span>
-                <span className="ml-2">👨‍🍳</span>
-              </Link>
-            </div>
-          </div>
-          
-          {/* Trust Indicators */}
-          <div className="animate-slide-up">
-            <p className="text-sm text-neutral-500 mb-6">Trusted by 500+ restaurants worldwide</p>
-            <div className="flex items-center justify-center space-x-8 opacity-60">
-              <div className="bg-neutral-100 px-4 py-2 rounded-lg text-sm font-medium">Restaurant A</div>
-              <div className="bg-neutral-100 px-4 py-2 rounded-lg text-sm font-medium">Hotel B</div>
-              <div className="bg-neutral-100 px-4 py-2 rounded-lg text-sm font-medium">Cafe C</div>
-              <div className="bg-neutral-100 px-4 py-2 rounded-lg text-sm font-medium">Bar D</div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Features Section */}
       <section className="py-20 lg:py-32 bg-white" id="features">

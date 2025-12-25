@@ -1,5 +1,5 @@
 import './globals.css'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import Navigation from '@/components/Navigation'
 import { AuthProvider } from '@/contexts/AuthContext'
@@ -9,10 +9,15 @@ import { RealtimeProvider } from '@/contexts/RealtimeContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+}
+
 export const metadata: Metadata = {
   title: 'SplitEase - Group Billing Made Easy',
   description: 'Revolutionizing group billing and order management in hotels, restaurants, cafes, bars, and entertainment venues.',
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
   themeColor: '#0ea5e9',
 }
 

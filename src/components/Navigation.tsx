@@ -41,6 +41,8 @@ export default function Navigation() {
 
   // Filter navigation based on user role and permissions
   const getFilteredNavigation = () => {
+    // Hide top-bar links on the home page to avoid duplicates with hero CTAs
+    if (pathname === '/') return []
     if (!isAuthenticated || !user) {
       return navigation.filter(item => ['Manager', 'Waiter'].includes(item.name))
     }
@@ -68,7 +70,7 @@ export default function Navigation() {
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="hidden lg:flex bg-white/80 backdrop-blur-xl border-b border-neutral-200/50 sticky top-0 z-50">
+      <nav className="hidden lg:flex bg-transparent backdrop-blur-xl fixed top-0 left-0 right-0 z-50">
         <div className="container-mobile">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
@@ -161,7 +163,7 @@ export default function Navigation() {
       </nav>
 
       {/* Mobile Navigation */}
-      <nav className="lg:hidden bg-white border-b border-neutral-200/50 sticky top-0 z-50">
+      <nav className="lg:hidden bg-transparent fixed top-0 left-0 right-0 z-50">
         <div className="px-4">
           <div className="flex items-center justify-between h-16">
             {/* Mobile Logo */}
@@ -192,7 +194,7 @@ export default function Navigation() {
         {isMobileMenuOpen && (
           <div className="absolute top-16 left-0 right-0 bg-white border-b border-neutral-200/50 shadow-lg">
             <div className="px-4 py-6 space-y-1">
-              {navigation.map((item) => {
+              {filteredNavigation.map((item) => {
                 const isActive = pathname === item.href
                 return (
                   <Link
@@ -264,7 +266,7 @@ export default function Navigation() {
       {/* Mobile Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-neutral-200/50 lg:hidden z-40 safe-area-inset">
         <div className="grid grid-cols-4 gap-1 px-2 py-2">
-          {navigation.slice(0, 4).map((item) => {
+          {filteredNavigation.slice(0, 4).map((item) => {
             const isActive = pathname === item.href
             return (
               <Link

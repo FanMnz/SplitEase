@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { Save, RotateCcw, Eye, Copy, Check } from 'lucide-react'
 
 interface MediaConfig {
@@ -56,6 +57,7 @@ export default function MediaConfigPage() {
   const [saved, setSaved] = useState(false)
   const [copied, setCopied] = useState<string | null>(null)
   const [expandedSections, setExpandedSections] = useState<string[]>(['announcement', 'background'])
+  const [announcementPreviewError, setAnnouncementPreviewError] = useState(false)
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY)
@@ -206,14 +208,17 @@ export default function MediaConfigPage() {
                 {/* Preview */}
                 <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
                   <p className="text-sm font-medium text-gray-700 mb-2">Preview</p>
-                  <img
-                    src={config.announcement.poster}
-                    alt="Announcement preview"
-                    className="w-full h-48 object-cover rounded-lg"
-                    onError={(e) => {
-                      e.currentTarget.src = 'https://via.placeholder.com/1200x630?text=Invalid+Image'
-                    }}
-                  />
+                  <div className="relative w-full h-48 overflow-hidden rounded-lg">
+                    <Image
+                      src={announcementPreviewError ? 'https://via.placeholder.com/1200x630?text=Invalid+Image' : config.announcement.poster}
+                      alt="Announcement preview"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 600px"
+                      onError={() => setAnnouncementPreviewError(true)}
+                      unoptimized
+                    />
+                  </div>
                 </div>
               </div>
             )}

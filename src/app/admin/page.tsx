@@ -141,13 +141,13 @@ export default function AdminDashboard() {
               <span>🎬</span>
               <span>Edit Media Files</span>
             </Link>
-            <a
+            <Link
               href="/"
               className="flex items-center gap-3 p-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
             >
               <span>🏠</span>
               <span>Back to Home</span>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
