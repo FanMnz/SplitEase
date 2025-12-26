@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import AnnouncementHero from '@/components/media/AnnouncementHero'
-import MenuDisplay from '@/components/menu/MenuDisplay'
+import MenuBook from '@/components/menu/MenuBook'
 import { useOrders, OrderItem, MenuItem } from '@/contexts/OrderContext'
 import { useMediaConfig } from '@/hooks/useMediaConfig'
 import { ShoppingCartIcon, XMarkIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
@@ -29,7 +29,7 @@ export default function TablePage() {
       setNameInput(stored)
     }
     setMounted(true)
-  }, [])
+  }, [tableId])
 
   if (!mounted) {
     return <div className="min-h-screen bg-white" />
@@ -169,10 +169,9 @@ export default function TablePage() {
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-8 text-center">
             Our Menu
           </h2>
-          <MenuDisplay
+          <MenuBook
             onAddToCart={(item) => handleAddToCart(item)}
             cartItems={cart}
-            showCategories={true}
           />
         </div>
       </section>
