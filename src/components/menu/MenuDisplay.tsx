@@ -200,7 +200,11 @@ export default function MenuDisplay({
                       {/* Dietary and Time Info */}
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
-                          {item.dietary.map(diet => getDietaryIcon(diet)).filter(Boolean)}
+                          {item.dietary.map((diet, idx) => (
+                            <div key={`${item.id}-${diet}-${idx}`}>
+                              {getDietaryIcon(diet)}
+                            </div>
+                          ))}
                         </div>
                         <div className="flex items-center space-x-1 text-sm text-neutral-500">
                           <ClockIcon className="w-4 h-4" />

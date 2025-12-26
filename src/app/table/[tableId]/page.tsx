@@ -17,13 +17,30 @@ export default function TablePage() {
   const [cart, setCart] = useState<OrderItem[]>([])
   const [cartOpen, setCartOpen] = useState(false)
   const [showCheckout, setShowCheckout] = useState(false)
+  const [pseudonym, setPseudonym] = useState('')
+  const [nameInput, setNameInput] = useState('')
+  const [isIdentified, setIsIdentified] = useState(false)
 
   useEffect(() => {
+    const stored = localStorage.getItem(`table-${tableId}-pseudonym`)
+    if (stored) {
+      setPseudonym(stored)
+      setIsIdentified(true)
+      setNameInput(stored)
+    }
     setMounted(true)
   }, [])
 
   if (!mounted) {
     return <div className="min-h-screen bg-white" />
+  }
+
+  const handleConfirmName = () => {
+    const trimmed = nameInput.trim()
+    if (!trimmed) return
+    localStorage.setItem(`table-${tableId}-pseudonym`, trimmed)
+    setPseudonym(trimmed)
+    setIsIdentified(true)
   }
 
   // Add item to cart
@@ -100,10 +117,43 @@ export default function TablePage() {
 
   return (
     <main className="min-h-screen bg-white">
+      {!isIdentified && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center px-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4">
+            <div>
+              <p className="text-sm uppercase tracking-wide text-brand-600 font-semibold">Welcome</p>
+              <h2 className="text-2xl font-bold text-neutral-900 mt-1">Identify yourself</h2>
+              <p className="text-sm text-neutral-600 mt-2">Pick a name or nickname so staff can match your orders at table {tableId}.</p>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm text-neutral-700" htmlFor="pseudonym">Your name or pseudonym</label>
+              <input
+                id="pseudonym"
+                value={nameInput}
+                onChange={(e) => setNameInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleConfirmName()
+                }}
+                className="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+                placeholder="e.g., Alice, Table Captain"
+                autoFocus
+              />
+            </div>
+            <button
+              onClick={handleConfirmName}
+              disabled={!nameInput.trim()}
+              className="w-full btn btn-primary disabled:opacity-50"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Announcement Hero - Full Bleed */}
       <AnnouncementHero
         playbackId={mediaConfig.announcement.playbackId}
-        title="Welcome to Our Restaurant"
+        title={`Welcome, ${pseudonym}`}
         subtitle="Scan & order your favorite dishes"
         ctaLabel="Browse Menu"
         onCtaClick={() => {

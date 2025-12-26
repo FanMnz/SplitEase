@@ -13,12 +13,12 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
+  themeColor: '#0ea5e9',
 }
 
 export const metadata: Metadata = {
   title: 'SplitEase - Group Billing Made Easy',
   description: 'Revolutionizing group billing and order management in hotels, restaurants, cafes, bars, and entertainment venues.',
-  themeColor: '#0ea5e9',
 }
 
 export default function RootLayout({

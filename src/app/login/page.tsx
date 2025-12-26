@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth, UserRole } from '@/contexts/AuthContext'
 import { 
@@ -173,9 +173,18 @@ function LoginForm({ role, onSuccess }: LoginFormProps) {
 }
 
 export default function LoginPage() {
-  const [selectedRole, setSelectedRole] = useState<UserRole>('manager')
   const router = useRouter()
   const { user } = useAuth()
+  const searchParams = useSearchParams()
+  const roleParam = searchParams.get('role') as UserRole | null
+  const [selectedRole, setSelectedRole] = useState<UserRole>('manager')
+
+  // Set selected role from URL parameter after mount
+  useEffect(() => {
+    if (roleParam && ['manager', 'waiter'].includes(roleParam)) {
+      setSelectedRole(roleParam)
+    }
+  }, [roleParam])
 
   // Redirect if already authenticated
   if (user) {
@@ -234,45 +243,26 @@ export default function LoginPage() {
             or enjoy your dining experience.
           </p>
 
-          {/* Role Selection */}
-          <div className="flex flex-col sm:flex-row gap-3 mb-8">
-            {[
-              { role: 'manager' as UserRole, label: 'Manager', icon: '👨‍💼', color: 'blue' },
-              { role: 'waiter' as UserRole, label: 'Staff', icon: '👨‍🍳', color: 'green' },
-              { role: 'customer' as UserRole, label: 'Guest', icon: '👥', color: 'purple' }
-            ].map(({ role, label, icon, color }) => (
-              <button
-                key={role}
-                onClick={() => setSelectedRole(role)}
-                className={`flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all ${
-                  selectedRole === role
-                    ? `bg-${color}-500 text-white shadow-lg`
-                    : 'bg-white text-gray-700 border border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <span className="text-xl">{icon}</span>
-                <span>{label} Portal</span>
-              </button>
-            ))}
-          </div>
-
-          {/* QR Code Option for Customers */}
-          {selectedRole === 'customer' && (
-            <div className="bg-white border-2 border-dashed border-gray-300 rounded-2xl p-6">
-              <div className="text-center">
-                <QrCodeIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="font-semibold text-gray-900 mb-2">Scan QR Code</h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Use your phone to scan the QR code at your table for instant access
-                </p>
-                <Link 
-                  href="/qr-scanner"
-                  className="inline-flex items-center space-x-2 text-brand-600 hover:text-brand-700 font-medium"
+          {/* Role Selection - Only show if no role parameter in URL */}
+          {!roleParam && (
+            <div className="flex flex-col sm:flex-row gap-3 mb-8">
+              {[
+                { role: 'manager' as UserRole, label: 'Manager', icon: '👨‍💼', color: 'blue' },
+                { role: 'waiter' as UserRole, label: 'Staff', icon: '👨‍🍳', color: 'green' }
+              ].map(({ role, label, icon, color }) => (
+                <button
+                  key={role}
+                  onClick={() => setSelectedRole(role)}
+                  className={`flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all ${
+                    selectedRole === role
+                      ? `bg-${color}-500 text-white shadow-lg`
+                      : 'bg-white text-gray-700 border border-gray-200 hover:border-gray-300'
+                  }`}
                 >
-                  <span>Open QR Scanner</span>
-                  <ArrowRightIcon className="w-4 h-4" />
-                </Link>
-              </div>
+                  <span className="text-xl">{icon}</span>
+                  <span>{label} Portal</span>
+                </button>
+              ))}
             </div>
           )}
         </div>

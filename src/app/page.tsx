@@ -32,9 +32,9 @@ export default function Home() {
           'Transform your restaurant operations with SplitEase. Eliminate billing confusion, speed up table turnover, and delight your customers with seamless payment experiences.'
         }
         ctaLabel="Manager Dashboard"
-        onCtaClick={() => window.location.assign('/manager')}
+        onCtaClick={() => window.location.assign('/login?role=manager')}
         secondaryCtaLabel="Waiter Interface"
-        onSecondaryCtaClick={() => window.location.assign('/waiter')}
+        onSecondaryCtaClick={() => window.location.assign('/login?role=waiter')}
       />
 
       {/* Features Section */}

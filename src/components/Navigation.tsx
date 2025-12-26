@@ -19,6 +19,7 @@ import ConnectionStatus from '@/components/realtime/ConnectionStatus'
 const navigation = [
   { name: 'Manager', href: '/manager', icon: '👨‍💼', description: 'Executive dashboard' },
   { name: 'Waiter', href: '/waiter', icon: '👨‍🍳', description: 'Service interface' },
+  { name: 'QR Codes', href: '/qr-codes', icon: '🔳', description: 'Table QR & print' },
   { name: 'Customer', href: '/customer', icon: '👥', description: 'Table ordering' },
   { name: 'Dashboard', href: '/dashboard', icon: '📊', description: 'Overview & stats' },
   { name: 'Tables', href: '/tables', icon: '🪑', description: 'Manage seating' },
@@ -50,11 +51,11 @@ export default function Navigation() {
     switch (user.role) {
       case 'manager':
         return navigation.filter(item => 
-          ['Manager', 'Dashboard', 'Tables', 'Orders', 'Menu', 'Billing', 'Analytics'].includes(item.name)
+          ['Manager', 'QR Codes', 'Tables', 'Orders', 'Menu', 'Billing'].includes(item.name)
         )
       case 'waiter':
         return navigation.filter(item => 
-          ['Waiter', 'Tables', 'Orders', 'Menu', 'Billing'].includes(item.name)
+          ['Waiter', 'QR Codes', 'Tables', 'Orders', 'Menu'].includes(item.name)
         )
       case 'customer':
         return navigation.filter(item => 
