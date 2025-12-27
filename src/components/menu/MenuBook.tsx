@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useOrders, MenuItem, OrderItem } from '@/contexts/OrderContext'
 import MuxPlayer from '@mux/mux-player-react'
 import { 
@@ -33,9 +33,14 @@ export default function MenuBook({ onAddToCart, cartItems, className = '' }: Men
   const [touchDeltaX, setTouchDeltaX] = useState(0)
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null)
   const [soundEnabled, setSoundEnabled] = useState(false)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
     setMounted(true)
+    // Preload external flip sound if available in /public/sounds/page-flip.mp3
+    const audio = new Audio('/sounds/page-flip.mp3')
+    audio.preload = 'auto'
+    audioRef.current = audio
   }, [])
 
   const currentCategory = categories[pageIndex]
@@ -60,7 +65,7 @@ export default function MenuBook({ onAddToCart, cartItems, className = '' }: Men
   const goPrev = () => {
     if (pageIndex === 0) return
     setIsTurning('prev')
-    if (soundEnabled) playFlipSound()
+    if (soundEnabled) playFlipSound('prev')
     setTimeout(() => {
       setPageIndex(i => Math.max(0, i - 1))
       setIsTurning(null)
@@ -70,7 +75,7 @@ export default function MenuBook({ onAddToCart, cartItems, className = '' }: Men
   const goNext = () => {
     if (pageIndex === categories.length - 1) return
     setIsTurning('next')
-    if (soundEnabled) playFlipSound()
+    if (soundEnabled) playFlipSound('next')
     setTimeout(() => {
       setPageIndex(i => Math.min(categories.length - 1, i + 1))
       setIsTurning(null)
@@ -100,43 +105,109 @@ export default function MenuBook({ onAddToCart, cartItems, className = '' }: Men
     setTouchDeltaX(0)
   }
 
-  // Paper rustling sound via WebAudio
-  const playFlipSound = () => {
+  // MP3-first flip sound; falls back to WebAudio synthesis if file missing
+  const playFlipSound = (direction: 'next' | 'prev' = 'next') => {
     try {
+      const audio = audioRef.current
+      if (audio) {
+        audio.currentTime = 0
+        // Slight playbackRate tweak for direction feel
+        audio.playbackRate = direction === 'next' ? 1.02 : 0.98
+        audio.play().catch(() => {})
+        return
+      }
+
       const AudioCtx = (window as any).AudioContext || (window as any).webkitAudioContext
       const ctx = new AudioCtx()
+      if (ctx.state === 'suspended') ctx.resume()
       const now = ctx.currentTime
-      
-      // Create white noise for paper rustling effect
-      const bufferSize = ctx.sampleRate * 0.12
+
+      // Base paper rustle: band-passed noise with slight sweep, longer tail (~0.35s)
+      const bufferSize = Math.floor(ctx.sampleRate * 0.38)
       const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate)
       const data = buffer.getChannelData(0)
       for (let i = 0; i < bufferSize; i++) {
         data[i] = Math.random() * 2 - 1
       }
-      
+
       const noise = ctx.createBufferSource()
       noise.buffer = buffer
-      
-      // High-pass filter for crisp paper sound
-      const filter = ctx.createBiquadFilter()
-      filter.type = 'highpass'
-      filter.frequency.value = 2400
-      filter.Q.value = 0.8
-      
-      const gain = ctx.createGain()
-      gain.gain.value = 0.0001
-      
-      noise.connect(filter)
-      filter.connect(gain)
-      gain.connect(ctx.destination)
-      
-      // Quick attack, fast decay for paper rustle
-      gain.gain.exponentialRampToValueAtTime(0.12, now + 0.008)
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12)
-      
+
+      const bandpass = ctx.createBiquadFilter()
+      bandpass.type = 'bandpass'
+      bandpass.frequency.setValueAtTime(750, now)
+      bandpass.frequency.linearRampToValueAtTime(1500, now + 0.18)
+      bandpass.Q.value = 1.1
+
+      const highpass = ctx.createBiquadFilter()
+      highpass.type = 'highpass'
+      highpass.frequency.value = 380
+      highpass.Q.value = 0.8
+
+      const rustleGain = ctx.createGain()
+      rustleGain.gain.setValueAtTime(0.0001, now)
+      rustleGain.gain.exponentialRampToValueAtTime(0.22, now + 0.014)
+      rustleGain.gain.exponentialRampToValueAtTime(0.04, now + 0.18)
+      rustleGain.gain.exponentialRampToValueAtTime(0.0005, now + 0.34)
+      rustleGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.38)
+
+      const panner = ctx.createStereoPanner()
+      panner.pan.setValueAtTime(direction === 'next' ? 0.35 : -0.35, now)
+
+      noise.connect(bandpass)
+      bandpass.connect(highpass)
+      highpass.connect(rustleGain)
+      rustleGain.connect(panner)
+      panner.connect(ctx.destination)
+
+      // Low flutter for page stiffness
+      const flutter = ctx.createOscillator()
+      flutter.type = 'triangle'
+      flutter.frequency.setValueAtTime(24, now)
+      flutter.frequency.linearRampToValueAtTime(32, now + 0.16)
+      const flutterGain = ctx.createGain()
+      flutterGain.gain.setValueAtTime(0.00001, now)
+      flutterGain.gain.exponentialRampToValueAtTime(0.0045, now + 0.018)
+      flutterGain.gain.exponentialRampToValueAtTime(0.0002, now + 0.22)
+      flutter.connect(flutterGain)
+      flutterGain.connect(ctx.destination)
+
+      // Soft thump to mimic the page settling
+      const thump = ctx.createOscillator()
+      thump.type = 'sine'
+      thump.frequency.setValueAtTime(110, now)
+      const thumpGain = ctx.createGain()
+      thumpGain.gain.setValueAtTime(0.0001, now)
+      thumpGain.gain.exponentialRampToValueAtTime(0.018, now + 0.012)
+      thumpGain.gain.exponentialRampToValueAtTime(0.00012, now + 0.09)
+      thump.connect(thumpGain)
+      thumpGain.connect(ctx.destination)
+
+      // Secondary short rustle for trailing edge
+      const noise2 = ctx.createBufferSource()
+      noise2.buffer = buffer
+      const bandpass2 = ctx.createBiquadFilter()
+      bandpass2.type = 'bandpass'
+      bandpass2.frequency.setValueAtTime(1600, now + 0.08)
+      bandpass2.frequency.linearRampToValueAtTime(1200, now + 0.2)
+      bandpass2.Q.value = 0.9
+      const gain2 = ctx.createGain()
+      gain2.gain.setValueAtTime(0.0001, now + 0.08)
+      gain2.gain.exponentialRampToValueAtTime(0.08, now + 0.1)
+      gain2.gain.exponentialRampToValueAtTime(0.0004, now + 0.22)
+      gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.3)
+      noise2.connect(bandpass2)
+      bandpass2.connect(gain2)
+      gain2.connect(panner)
+
       noise.start(now)
-      noise.stop(now + 0.13)
+      noise.stop(now + 0.38)
+      noise2.start(now + 0.08)
+      noise2.stop(now + 0.32)
+      flutter.start(now)
+      flutter.stop(now + 0.24)
+      thump.start(now)
+      thump.stop(now + 0.11)
     } catch (e) {
       // ignore
     }
