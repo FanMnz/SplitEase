@@ -104,116 +104,166 @@ const OrderContext = createContext<OrderContextType | undefined>(undefined)
 const mockMenu: MenuItem[] = [
   // Appetizers
   {
-    id: 'app1',
-    name: 'Bruschetta Trio',
-    description: 'Three varieties of our signature bruschetta with fresh tomatoes, basil, and mozzarella',
-    price: 12.50,
-    category: 'appetizers',
-    allergens: ['gluten', 'dairy'],
-    dietary: ['vegetarian'],
+    id: "app1",
+    name: "Bruschetta Trio",
+    description:
+      "Three varieties of our signature bruschetta with fresh tomatoes, basil, and mozzarella",
+    price: 12.5,
+    category: "appetizers",
+    allergens: ["gluten", "dairy"],
+    dietary: ["vegetarian"],
     preparationTime: 8,
     isAvailable: true,
-    ingredients: ['bread', 'tomatoes', 'basil', 'mozzarella', 'olive oil']
+    ingredients: ["bread", "tomatoes", "basil", "mozzarella", "olive oil"],
   },
   {
-    id: 'app2',
-    name: 'Calamari Rings',
-    description: 'Crispy fried squid rings with marinara sauce and lemon',
-    price: 14.00,
-    category: 'appetizers',
-    allergens: ['gluten', 'seafood'],
+    id: "app2",
+    name: "Calamari Rings",
+    description: "Crispy fried squid rings with marinara sauce and lemon",
+    price: 14.0,
+    category: "appetizers",
+    allergens: ["gluten", "seafood"],
     dietary: [],
     preparationTime: 12,
     isAvailable: true,
-    ingredients: ['squid', 'flour', 'marinara sauce', 'lemon']
+    ingredients: ["squid", "flour", "marinara sauce", "lemon"],
   },
-  
+  {
+    id: "app3",
+    name: "Strawberry",
+    description:
+      "Fresh strawberries and mixed berries served with creamy yogurt",
+    price: 15.0,
+    category: "appetizers",
+    muxPlaybackId: "19pMJ00fp8n1QbZILdU3g9BdVzblgiYmljdXXwzGN99U",
+    posterUrl:
+      "https://image.mux.com/iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk/poster.jpg",
+    allergens: ["gluten", "seafood"],
+    dietary: [],
+    preparationTime: 14,
+    isAvailable: true,
+    ingredients: ["Strawberries", "yogurt", "mixed berries", "honey"],
+  },
+
   // Main Courses
   {
-    id: 'main1',
-    name: 'Grilled Salmon',
-    description: 'Atlantic salmon with roasted vegetables and lemon butter sauce',
-    price: 28.00,
-    category: 'mains',
-    muxPlaybackId: 'iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk',
-    posterUrl: 'https://image.mux.com/iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk/poster.jpg',
-    allergens: ['fish', 'dairy'],
-    dietary: ['gluten-free'],
+    id: "main1",
+    name: "Grilled Salmon",
+    description:
+      "Atlantic salmon with roasted vegetables and lemon butter sauce",
+    price: 28.0,
+    category: "mains",
+    muxPlaybackId: "iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk",
+    posterUrl:
+      "https://image.mux.com/iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk/poster.jpg",
+    allergens: ["fish", "dairy"],
+    dietary: ["gluten-free"],
     preparationTime: 18,
     isAvailable: true,
-    ingredients: ['salmon', 'vegetables', 'butter', 'lemon', 'herbs']
+    ingredients: ["salmon", "vegetables", "butter", "lemon", "herbs"],
   },
   {
-    id: 'main2',
-    name: 'Ribeye Steak',
-    description: '12oz ribeye with garlic mashed potatoes and seasonal vegetables',
-    price: 35.00,
-    category: 'mains',
-    muxPlaybackId: 'iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk',
-    posterUrl: 'https://image.mux.com/iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk/poster.jpg',
-    allergens: ['dairy'],
-    dietary: ['gluten-free'],
+    id: "main2",
+    name: "Beef Curry with Steamed Rice",
+    description:
+      "Tender beef simmered in a rich, spiced sauce with herbs, served alongside fluffy white rice garnished with fresh greens",
+    price: 35.0,
+    category: "mains",
+    muxPlaybackId: "3j8A31yNVPx84uBLNeJKS3P69LLy02pcnZTz96UlkjW8",
+    posterUrl:
+      "https://image.mux.com/iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk/poster.jpg",
+    allergens: ["dairy"],
+    dietary: ["gluten-free"],
     preparationTime: 22,
     isAvailable: true,
-    ingredients: ['ribeye', 'potatoes', 'garlic', 'butter', 'vegetables']
+    ingredients: ["ribeye", "potatoes", "garlic", "butter", "vegetables"],
   },
   {
-    id: 'main3',
-    name: 'Mushroom Risotto',
-    description: 'Creamy arborio rice with mixed mushrooms and parmesan',
-    price: 24.00,
-    category: 'mains',
-    muxPlaybackId: 'iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk',
-    posterUrl: 'https://image.mux.com/iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk/poster.jpg',
-    allergens: ['dairy'],
-    dietary: ['vegetarian', 'gluten-free'],
+    id: "main3",
+    name: "Slow-roasted pork belly",
+    description:
+      "sliced and finished with a glossy, caramelized glaze, featuring a tender, juicy interior and a lightly charred exterior",
+    price: 24.0,
+    category: "mains",
+    muxPlaybackId: "dBp6A554so1M2R9VqzH6dpUP34lb7F01yxmFD4eGciH4",
+    posterUrl:
+      "https://image.mux.com/iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk/poster.jpg",
+    allergens: ["dairy"],
+    dietary: ["vegetarian", "gluten-free"],
     preparationTime: 20,
     isAvailable: true,
-    ingredients: ['arborio rice', 'mushrooms', 'parmesan', 'white wine', 'herbs']
+    ingredients: [
+      "arborio rice",
+      "mushrooms",
+      "parmesan",
+      "white wine",
+      "herbs",
+    ],
   },
-  
+  {
+    id: "main4",
+    name: "Spicy Seafood",
+    description:
+      "A flavorful hot pot with shrimp, tofu, mushrooms, and tender meat, simmered in a savory, spicy broth with fresh herbs and aromatics",
+    price: 35.0,
+    category: "mains",
+    muxPlaybackId: "JD4DtaEC02Lt224T7lrbwhtN010130202MgJtgL02FblfbMdw",
+    posterUrl:
+      "https://image.mux.com/iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk/poster.jpg",
+    allergens: ["dairy"],
+    dietary: ["gluten-free"],
+    preparationTime: 22,
+    isAvailable: true,
+    ingredients: ["ribeye", "potatoes", "garlic", "butter", "vegetables"],
+  },
+
   // Desserts
   {
-    id: 'dess1',
-    name: 'Tiramisu',
-    description: 'Classic Italian dessert with espresso-soaked ladyfingers and mascarpone',
-    price: 9.50,
-    category: 'desserts',
-    muxPlaybackId: 'iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk',
-    posterUrl: 'https://image.mux.com/iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk/poster.jpg',
-    allergens: ['dairy', 'eggs', 'gluten'],
-    dietary: ['vegetarian'],
+    id: "dess1",
+    name: "Tiramisu",
+    description:
+      "Classic Italian dessert with espresso-soaked ladyfingers and mascarpone",
+    price: 9.5,
+    category: "desserts",
+    muxPlaybackId: "19pMJ00fp8n1QbZILdU3g9BdVzblgiYmljdXXwzGN99U",
+    posterUrl:
+      "https://image.mux.com/iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk/poster.jpg",
+    allergens: ["dairy", "eggs", "gluten"],
+    dietary: ["vegetarian"],
     preparationTime: 5,
     isAvailable: true,
-    ingredients: ['mascarpone', 'ladyfingers', 'espresso', 'cocoa', 'eggs']
+    ingredients: ["mascarpone", "ladyfingers", "espresso", "cocoa", "eggs"],
   },
-  
+
   // Beverages
   {
-    id: 'bev1',
-    name: 'House Wine (Red)',
-    description: 'Our signature red wine blend',
-    price: 8.00,
-    category: 'beverages',
-    allergens: ['sulfites'],
-    dietary: ['vegan'],
+    id: "bev1",
+    name: "House Wine (Red)",
+    description: "Our signature red wine blend",
+    price: 8.0,
+    category: "beverages",
+    muxPlaybackId: "RNFYp2u9juLiZpceUvk7IxoWrRYkMoNeVURIT02W1aqQ",
+    posterUrl:
+      "https://image.mux.com/iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk/poster.jpg",
+    allergens: ["sulfites"],
+    dietary: ["vegan"],
     preparationTime: 2,
     isAvailable: true,
-    ingredients: ['red wine']
+    ingredients: ["red wine"],
   },
   {
-    id: 'bev2',
-    name: 'Craft Beer',
-    description: 'Local brewery selection',
-    price: 6.50,
-    category: 'beverages',
-    allergens: ['gluten'],
+    id: "bev2",
+    name: "Craft Beer",
+    description: "Local brewery selection",
+    price: 6.5,
+    category: "beverages",
+    allergens: ["gluten"],
     dietary: [],
     preparationTime: 2,
     isAvailable: true,
-    ingredients: ['beer']
-  }
-]
+    ingredients: ["beer"],
+  },
+];
 
 export function OrderProvider({ children }: { children: ReactNode }) {
   const [orders, setOrders] = useState<Order[]>([])
