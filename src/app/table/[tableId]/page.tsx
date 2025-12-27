@@ -163,10 +163,10 @@ export default function TablePage() {
         poster={mediaConfig.announcement.poster}
       />
 
-      {/* Menu Section */}
-      <section id="menu-section" className="w-full py-8 px-4 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-8 text-center">
+      {/* Menu Section - Full Screen */}
+      <section id="menu-section" className="w-full min-h-screen bg-neutral-200 flex items-center justify-center py-8 px-4">
+        <div className="w-full max-w-4xl">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-12 text-center">
             Our Menu
           </h2>
           <MenuBook

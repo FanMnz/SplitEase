@@ -229,9 +229,9 @@ export default function MenuBook({ onAddToCart, cartItems, className = '' }: Men
 
   return (
     <div className={`relative ${className}`}>
-      {/* Selected dish preview above the book */}
-      <div className="relative w-full max-w-3xl mx-auto mb-6">
-        <div className="relative h-56 lg:h-72 rounded-2xl border border-neutral-200 overflow-hidden bg-neutral-100 flex items-center justify-center">
+        {/* Selected dish preview above the book */}
+        <div className="relative w-full max-w-3xl mx-auto mb-6">
+          <div className="relative h-56 lg:h-72 rounded-2xl border border-neutral-200 overflow-hidden bg-neutral-100 flex items-center justify-center">
           {selectedItem ? (
             <>
               {selectedItem.muxPlaybackId ? (
@@ -243,7 +243,13 @@ export default function MenuBook({ onAddToCart, cartItems, className = '' }: Men
                   loop
                   playsInline
                   poster={selectedItem.posterUrl}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  className="absolute inset-0 w-full h-full"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    '--media-object-fit': 'cover',
+                    '--media-object-position': 'center'
+                  } as any}
                 />
               ) : selectedItem.posterUrl ? (
                 <img
@@ -297,7 +303,7 @@ export default function MenuBook({ onAddToCart, cartItems, className = '' }: Men
         {/* Book card */}
         <div className="bg-white rounded-2xl shadow-lg border border-neutral-200 overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-200">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-200 bg-neutral-50">
             <button
               onClick={goPrev}
               disabled={pageIndex === 0}
@@ -365,7 +371,7 @@ export default function MenuBook({ onAddToCart, cartItems, className = '' }: Men
                   return (
                     <div
                       key={item.id}
-                      className="group flex items-center justify-between px-3 py-2 rounded-xl border border-neutral-200 hover:bg-neutral-50"
+                      className="group flex items-center justify-between px-3 py-2 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50"
                     >
                       <button onClick={() => setSelectedItem(item)} className="flex-1 text-left">
                         <p className="font-medium text-neutral-900">{item.name}</p>
@@ -428,7 +434,7 @@ export default function MenuBook({ onAddToCart, cartItems, className = '' }: Men
           </div>
 
           {/* Footer with page indicator */}
-          <div className="px-4 py-2 border-t border-neutral-200 flex items-center justify-center text-xs text-neutral-500">
+          <div className="px-4 py-2 border-t border-neutral-200 bg-neutral-50 flex items-center justify-center text-xs text-neutral-500">
             Page {pageIndex + 1} / {categories.length}
           </div>
         </div>

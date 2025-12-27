@@ -4,6 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide Mux Player controls */
+mux-player {
+  --controls: none;
+}
+
 @layer base {
   * {
     @apply border-neutral-200;

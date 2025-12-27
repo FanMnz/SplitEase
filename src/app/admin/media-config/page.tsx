@@ -25,7 +25,8 @@ const STORAGE_KEY = 'splitease_media_config'
 const DEFAULT_CONFIG: MediaConfig = {
   announcement: {
     playbackId: "iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk",
-    poster: "https://via.placeholder.com/1600x900?text=Announcement+Hero",
+    poster:
+      "https://player.mux.com/iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk?metadata-video-title=AccueilResto&video-title=AccueilResto",
   },
   background: {
     playbackId: "iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk",
@@ -35,19 +36,23 @@ const DEFAULT_CONFIG: MediaConfig = {
   items: {
     grilledSalmon: {
       playbackId: "iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk",
-      poster: "https://via.placeholder.com/800x600?text=Grilled+Salmon",
+      poster:
+        "https://player.mux.com/iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk?metadata-video-title=AccueilResto&video-title=AccueilResto",
     },
     ribeyeSteak: {
       playbackId: "iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk",
-      poster: "https://via.placeholder.com/800x600?text=Ribeye+Steak",
+      poster:
+        "https://player.mux.com/iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk?metadata-video-title=AccueilResto&video-title=AccueilResto",
     },
     mushroomRisotto: {
       playbackId: "iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk",
-      poster: "https://via.placeholder.com/800x600?text=Mushroom+Risotto",
+      poster:
+        "https://player.mux.com/iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk?metadata-video-title=AccueilResto&video-title=AccueilResto",
     },
     tiramisu: {
       playbackId: "iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk",
-      poster: "https://via.placeholder.com/800x600?text=Tiramisu",
+      poster:
+        "https://player.mux.com/iIJzzdGotO2vFbTvx8COXRc01Gq2thhL8YbjVMptniTk?metadata-video-title=AccueilResto&video-title=AccueilResto",
     },
   },
 };
