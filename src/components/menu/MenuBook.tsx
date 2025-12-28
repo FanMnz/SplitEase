@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { useOrders, MenuItem, OrderItem } from '@/contexts/OrderContext'
 import MuxPlayer from '@mux/mux-player-react'
 import { 
@@ -16,10 +16,11 @@ interface MenuBookProps {
   onAddToCart: (item: OrderItem) => void
   cartItems: OrderItem[]
   className?: string
+  onSelectItem?: (item: MenuItem) => void
 }
 
-export default function MenuBook({ onAddToCart, cartItems, className = '' }: MenuBookProps) {
-  const { getMenuByCategory, menu } = useOrders()
+export default function MenuBook({ onAddToCart, cartItems, className = '', onSelectItem }: MenuBookProps) {
+  const { getMenuByCategory } = useOrders()
   const [mounted, setMounted] = useState(false)
   const categories = [
     { id: 'appetizers', name: 'Appetizers', emoji: '🥗' },
@@ -34,6 +35,17 @@ export default function MenuBook({ onAddToCart, cartItems, className = '' }: Men
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null)
   const [soundEnabled, setSoundEnabled] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  const handwritingFont = `'Segoe Script', 'Bradley Hand', 'Comic Sans MS', 'Caveat', cursive`
+  const notebookStyle: CSSProperties = {
+    backgroundColor: '#fffdf7',
+    backgroundImage: `
+      linear-gradient(to bottom, rgba(0,0,0,0.08) 1px, transparent 1px),
+      linear-gradient(to right, rgba(244,63,94,0.35) 2px, transparent 2px)
+    `,
+    backgroundSize: '100% 44px, 74px 100%',
+    backgroundPosition: '0 28px, 62px 0',
+  }
 
   useEffect(() => {
     setMounted(true)
@@ -229,97 +241,38 @@ export default function MenuBook({ onAddToCart, cartItems, className = '' }: Men
 
   return (
     <div className={`relative ${className}`}>
-        {/* Selected dish preview above the book */}
-        <div className="relative w-full max-w-3xl mx-auto mb-6">
-          <div className="relative h-56 lg:h-72 rounded-2xl border border-neutral-200 overflow-hidden bg-neutral-100 flex items-center justify-center">
-          {selectedItem ? (
-            <>
-              {selectedItem.muxPlaybackId ? (
-                <MuxPlayer
-                  playbackId={selectedItem.muxPlaybackId}
-                  streamType="on-demand"
-                  muted
-                  autoPlay
-                  loop
-                  playsInline
-                  poster={selectedItem.posterUrl}
-                  className="absolute inset-0 w-full h-full"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    '--media-object-fit': 'cover',
-                    '--media-object-position': 'center'
-                  } as any}
-                />
-              ) : selectedItem.posterUrl ? (
-                <img
-                  src={selectedItem.posterUrl}
-                  alt={selectedItem.name}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="text-6xl">
-                  {selectedItem.category === 'appetizers' ? '🥗' : selectedItem.category === 'mains' ? '🍽️' : selectedItem.category === 'desserts' ? '🍰' : '🥤'}
-                </div>
-              )}
-              {/* Dish details legend overlay */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-4 pt-12">
-                <h3 className="text-white font-bold text-lg mb-1">{selectedItem.name}</h3>
-                <p className="text-white/90 text-sm mb-2">{selectedItem.description}</p>
-                <div className="flex items-center gap-4 text-xs text-white/80">
-                  <span className="flex items-center gap-1">
-                    <ClockIcon className="w-4 h-4" />
-                    {selectedItem.preparationTime} min
-                  </span>
-                  <span className="font-semibold text-white">€{selectedItem.price.toFixed(2)}</span>
-                  {selectedItem.dietary && selectedItem.dietary.length > 0 && (
-                    <span className="flex items-center gap-1">
-                      {selectedItem.dietary.map(diet => (
-                        <span key={diet} className="text-xs">
-                          {diet === 'vegetarian' && '🥬'}
-                          {diet === 'vegan' && '🌱'}
-                          {diet === 'gluten-free' && '🌾'}
-                          {diet === 'dairy-free' && '🥛'}
-                        </span>
-                      ))}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className="text-center text-neutral-500">
-              <p className="text-sm">Tap an item to preview</p>
-            </div>
-          )}
-        </div>
-      </div>
-
       {/* Book container */}
-      <div className="relative w-full max-w-lg mx-auto">
+      <div className="relative w-full max-w-2xl mx-auto rotate-[-0.4deg]">
         {/* Book spine */}
-        <div className="absolute -left-2 top-6 bottom-6 w-2 bg-gradient-to-b from-neutral-300 via-neutral-400 to-neutral-300 rounded" />
+        <div className="absolute -left-3 top-8 bottom-8 w-3 bg-gradient-to-b from-amber-200 via-amber-300 to-amber-200 rounded-full shadow-inner" />
+
+        {/* Paper holes */}
+        <div className="absolute -left-6 top-12 flex flex-col gap-10">
+          {Array.from({ length: 5 }).map((_, idx) => (
+            <div key={idx} className="w-3 h-3 rounded-full bg-neutral-200 shadow-[inset_0_1px_2px_rgba(0,0,0,0.25)]" />
+          ))}
+        </div>
 
         {/* Book card */}
-        <div className="bg-white rounded-2xl shadow-lg border border-neutral-200 overflow-hidden">
+        <div className="rounded-3xl shadow-[0_16px_40px_rgba(0,0,0,0.18)] border border-amber-200 overflow-hidden" style={notebookStyle}>
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-200 bg-neutral-50">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-amber-200/70 bg-white/50 backdrop-blur-sm" style={{ fontFamily: handwritingFont }}>
             <button
               onClick={goPrev}
               disabled={pageIndex === 0}
-              className="p-2 rounded-lg hover:bg-neutral-100 disabled:opacity-40"
+              className="p-2 rounded-lg hover:bg-amber-100/80 disabled:opacity-40"
               aria-label="Previous page"
             >
               <ChevronLeftIcon className="w-5 h-5" />
             </button>
             <div className="text-center">
-              <p className="text-xs text-neutral-500">Category</p>
-              <p className="text-sm font-semibold">{currentCategory.emoji} {currentCategory.name}</p>
+              <p className="text-xs text-amber-700/80">Category</p>
+              <p className="text-lg font-semibold text-amber-900">{currentCategory.emoji} {currentCategory.name}</p>
             </div>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setSoundEnabled(s => !s)}
-                className={`p-2 rounded-lg ${soundEnabled ? 'bg-brand-50 text-brand-700' : 'hover:bg-neutral-100 text-neutral-600'}`}
+                className={`p-2 rounded-lg ${soundEnabled ? 'bg-amber-100 text-amber-900' : 'hover:bg-amber-100 text-amber-700'}`}
                 aria-label="Toggle flip sound"
                 title={soundEnabled ? 'Flip sound on' : 'Flip sound off'}
               >
@@ -342,14 +295,14 @@ export default function MenuBook({ onAddToCart, cartItems, className = '' }: Men
 
           {/* Page content with simple turn animation */}
           <div
-            className="relative h-[480px] select-none"
+            className="relative h-[520px] select-none"
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
             <div className="absolute inset-0 overflow-hidden">
               <div
-                className={`absolute inset-0 p-4 space-y-3 transition-transform duration-300 ease-out ${
+                className={`absolute inset-0 px-5 py-4 space-y-4 transition-transform duration-300 ease-out ${
                   isTurning === 'next' ? 'translate-x-4 opacity-90' : isTurning === 'prev' ? '-translate-x-4 opacity-90' : ''
                 }`}
                 style={{
@@ -371,13 +324,17 @@ export default function MenuBook({ onAddToCart, cartItems, className = '' }: Men
                   return (
                     <div
                       key={item.id}
-                      className="group flex items-center justify-between px-3 py-2 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50"
+                      className={`group flex items-center justify-between px-4 py-3 rounded-xl border transition-colors ${
+                        selectedItem?.id === item.id
+                          ? 'border-amber-400 bg-amber-50/80'
+                          : 'border-amber-200/70 bg-white/70 hover:bg-amber-50/60'
+                      } shadow-[0_4px_10px_rgba(0,0,0,0.06)]`}
                     >
-                      <button onClick={() => setSelectedItem(item)} className="flex-1 text-left">
-                        <p className="font-medium text-neutral-900">{item.name}</p>
-                        <div className="flex items-center text-xs text-neutral-500 gap-2">
-                          <span>€{item.price.toFixed(2)}</span>
+                      <button onClick={() => { setSelectedItem(item); onSelectItem && onSelectItem(item) }} className="flex-1 text-left" style={{ fontFamily: handwritingFont }}>
+                        <p className="text-lg text-amber-950 font-semibold">{item.name}</p>
+                        <div className="flex items-center text-xs text-amber-800 gap-3 mt-1">
                           <span className="inline-flex items-center gap-1"><ClockIcon className="w-3 h-3" />{item.preparationTime}m</span>
+                          <span className="text-sm font-semibold text-amber-900">€{item.price.toFixed(2)}</span>
                         </div>
                       </button>
                       <div className="flex items-center gap-2">
@@ -387,7 +344,7 @@ export default function MenuBook({ onAddToCart, cartItems, className = '' }: Men
                         <button
                           onClick={() => handleAddToCart(item)}
                           disabled={!item.isAvailable}
-                          className="px-3 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg text-xs font-medium disabled:bg-neutral-300"
+                          className="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-xs font-medium disabled:bg-neutral-300 shadow-sm"
                         >
                           <PlusIcon className="w-4 h-4" />
                         </button>
@@ -434,7 +391,7 @@ export default function MenuBook({ onAddToCart, cartItems, className = '' }: Men
           </div>
 
           {/* Footer with page indicator */}
-          <div className="px-4 py-2 border-t border-neutral-200 bg-neutral-50 flex items-center justify-center text-xs text-neutral-500">
+          <div className="px-5 py-3 border-t border-amber-200/70 bg-white/60 flex items-center justify-center text-xs text-amber-700" style={{ fontFamily: handwritingFont }}>
             Page {pageIndex + 1} / {categories.length}
           </div>
         </div>

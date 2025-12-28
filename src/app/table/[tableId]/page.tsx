@@ -1,11 +1,12 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import MuxPlayer from '@mux/mux-player-react'
 import AnnouncementHero from '@/components/media/AnnouncementHero'
 import MenuBook from '@/components/menu/MenuBook'
 import { useOrders, OrderItem, MenuItem } from '@/contexts/OrderContext'
 import { useMediaConfig } from '@/hooks/useMediaConfig'
-import { ShoppingCartIcon, XMarkIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
+import { ShoppingCartIcon, XMarkIcon, MinusIcon, PlusIcon, ClockIcon } from '@heroicons/react/24/outline'
 import { useParams } from 'next/navigation'
 
 export default function TablePage() {
@@ -20,6 +21,7 @@ export default function TablePage() {
   const [pseudonym, setPseudonym] = useState('')
   const [nameInput, setNameInput] = useState('')
   const [isIdentified, setIsIdentified] = useState(false)
+  const [bgItem, setBgItem] = useState<MenuItem | null>(null)
 
   useEffect(() => {
     const stored = localStorage.getItem(`table-${tableId}-pseudonym`)
@@ -163,15 +165,86 @@ export default function TablePage() {
         poster={mediaConfig.announcement.poster}
       />
 
-      {/* Menu Section - Full Screen */}
-      <section id="menu-section" className="w-full min-h-screen bg-neutral-200 flex items-center justify-center py-8 px-4">
+      {/* Menu Section */}
+      <section id="menu-section" className="w-full min-h-screen bg-neutral-50 flex items-center justify-center py-12 px-4">
         <div className="w-full max-w-4xl">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-12 text-center">
-            Our Menu
-          </h2>
+          <div className="text-center mb-8">
+            <h2 className="text-5xl lg:text-6xl font-bold text-amber-950 mb-3" style={{ fontFamily: "'Segoe Script', 'Bradley Hand', 'Comic Sans MS', 'Caveat', cursive" }}>
+              ✨ Our Menu ✨
+            </h2>
+            <div className="w-32 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto"></div>
+          </div>
+
+          {/* Video preview above the menu card */}
+          <div className="relative w-full max-w-3xl mx-auto mb-8">
+            <div className="relative h-56 lg:h-72 rounded-2xl border-2 border-amber-300 overflow-hidden bg-neutral-100 flex items-center justify-center shadow-lg">
+              {bgItem ? (
+                <>
+                  {bgItem.muxPlaybackId ? (
+                    <MuxPlayer
+                      playbackId={bgItem.muxPlaybackId}
+                      streamType="on-demand"
+                      muted
+                      autoPlay
+                      loop
+                      playsInline
+                      poster={bgItem.posterUrl}
+                      className="absolute inset-0 w-full h-full"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        '--media-object-fit': 'cover',
+                        '--media-object-position': 'center'
+                      } as any}
+                    />
+                  ) : bgItem.posterUrl ? (
+                    <img
+                      src={bgItem.posterUrl}
+                      alt={bgItem.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="text-6xl">
+                      {bgItem.category === 'appetizers' ? '🥗' : bgItem.category === 'mains' ? '🍽️' : bgItem.category === 'desserts' ? '🍰' : '🥤'}
+                    </div>
+                  )}
+                  {/* Dish details legend overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-4 pt-12">
+                    <h3 className="text-white font-bold text-lg mb-1">{bgItem.name}</h3>
+                    <p className="text-white/90 text-sm mb-2">{bgItem.description}</p>
+                    <div className="flex items-center gap-4 text-xs text-white/80">
+                      <span className="flex items-center gap-1">
+                        <ClockIcon className="w-4 h-4" />
+                        {bgItem.preparationTime} min
+                      </span>
+                      <span className="font-semibold text-white">€{bgItem.price.toFixed(2)}</span>
+                      {bgItem.dietary && bgItem.dietary.length > 0 && (
+                        <span className="flex items-center gap-1">
+                          {bgItem.dietary.map(diet => (
+                            <span key={diet} className="text-xs">
+                              {diet === 'vegetarian' && '🥬'}
+                              {diet === 'vegan' && '🌱'}
+                              {diet === 'gluten-free' && '🌾'}
+                              {diet === 'dairy-free' && '🥛'}
+                            </span>
+                          ))}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="text-center text-neutral-500">
+                  <p className="text-sm">Tap an item to preview</p>
+                </div>
+              )}
+            </div>
+          </div>
+
           <MenuBook
             onAddToCart={(item) => handleAddToCart(item)}
             cartItems={cart}
+            onSelectItem={(item) => setBgItem(item)}
           />
         </div>
       </section>
