@@ -81,7 +81,7 @@ export default function MenuBook({ onAddToCart, cartItems, className = '', onSel
     setTimeout(() => {
       setPageIndex(i => Math.max(0, i - 1))
       setIsTurning(null)
-    }, 250)
+    }, 450)
   }
 
   const goNext = () => {
@@ -91,7 +91,7 @@ export default function MenuBook({ onAddToCart, cartItems, className = '', onSel
     setTimeout(() => {
       setPageIndex(i => Math.min(categories.length - 1, i + 1))
       setIsTurning(null)
-    }, 250)
+    }, 450)
   }
 
   // Touch swipe handling
@@ -295,21 +295,27 @@ export default function MenuBook({ onAddToCart, cartItems, className = '', onSel
 
           {/* Page content with simple turn animation */}
           <div
-            className="relative h-[520px] select-none"
+            className="relative h-[520px] select-none [perspective:1400px]"
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
             <div className="absolute inset-0 overflow-hidden">
               <div
-                className={`absolute inset-0 px-5 py-4 space-y-4 transition-transform duration-300 ease-out ${
-                  isTurning === 'next' ? 'translate-x-4 opacity-90' : isTurning === 'prev' ? '-translate-x-4 opacity-90' : ''
+                className={`absolute inset-0 px-5 py-4 space-y-4 transition-transform duration-500 ease-out ${
+                  isTurning === 'next' ? 'opacity-95' : isTurning === 'prev' ? 'opacity-95' : ''
                 }`}
                 style={{
                   transform:
                     touchDeltaX !== 0
-                      ? `translateX(${Math.max(Math.min(touchDeltaX, 80), -80)}px) skewY(${Math.max(Math.min(touchDeltaX / 20, 4), -4)}deg)`
-                      : undefined,
+                      ? `translateX(${Math.max(Math.min(touchDeltaX, 80), -80)}px) skewY(${Math.max(Math.min(touchDeltaX / 20, 4), -4)}deg) rotateY(${Math.max(Math.min(touchDeltaX / 6, 18), -18)}deg)`
+                      : isTurning === 'next'
+                        ? 'translateX(24px) rotateY(-28deg) skewY(-3deg)'
+                        : isTurning === 'prev'
+                          ? 'translateX(-24px) rotateY(28deg) skewY(3deg)'
+                          : undefined,
+                  transformOrigin: isTurning === 'next' ? 'left center' : isTurning === 'prev' ? 'right center' : 'center center',
+                  boxShadow: isTurning ? '0 22px 55px rgba(0,0,0,0.18)' : undefined,
                 }}
               >
                 <div
@@ -319,6 +325,16 @@ export default function MenuBook({ onAddToCart, cartItems, className = '', onSel
                       'radial-gradient(circle at 20% 10%, rgba(0,0,0,0.03), rgba(0,0,0,0) 40%), radial-gradient(circle at 80% 90%, rgba(0,0,0,0.02), rgba(0,0,0,0) 40%), repeating-linear-gradient(0deg, rgba(0,0,0,0.015) 0, rgba(0,0,0,0.015) 1px, rgba(0,0,0,0) 2px)'
                   }}
                 />
+                {/* Paper curl highlights */}
+                <div className="pointer-events-none absolute inset-0 rounded-2xl" style={{
+                  background: `linear-gradient(90deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.45) 8%, rgba(255,255,255,0.0) 25%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(0,0,0,0.05) 92%, rgba(0,0,0,0.22) 100%)`,
+                  mixBlendMode: 'overlay',
+                  opacity: isTurning ? 1 : 0.6
+                }} />
+                <div className="pointer-events-none absolute inset-0 rounded-2xl" style={{
+                  background: 'radial-gradient(circle at 8% 15%, rgba(255,255,255,0.35), rgba(255,255,255,0) 35%), radial-gradient(circle at 92% 85%, rgba(0,0,0,0.15), rgba(0,0,0,0) 38%)',
+                  opacity: isTurning ? 1 : 0.5
+                }} />
                 {currentItems.slice(0, 12).map((item) => {
                   const qty = getItemQuantityInCart(item.id)
                   return (
